@@ -19,7 +19,11 @@
             "destination": "/server.js"
         },
         {
-            "source": "/(.*)",
+            "source": "/assets/(.*)",
+            "destination": "/erp-frontend/assets/$1"
+        },
+        {
+            "source": "/((?!assets/|favicon.png|vite.svg|.*\\..*).*)",
             "destination": "/erp-frontend/index.html"
         }
     ]
