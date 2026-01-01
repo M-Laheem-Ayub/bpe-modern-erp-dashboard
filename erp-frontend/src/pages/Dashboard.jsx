@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Package, ShoppingCart, Users, LifeBuoy, CreditCard, Heart, Monitor, Truck, BookOpen, TrendingUp, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Package, ShoppingCart, Users, LifeBuoy, CreditCard, Heart, Monitor, Truck, BookOpen, TrendingUp, AlertTriangle, ArrowRight, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../api';
 
@@ -18,6 +18,7 @@ const StatCard = ({ title, value, subtext, icon: Icon, color }) => (
 );
 
 const Dashboard = () => {
+    const [isLoading, setIsLoading] = useState(true);
     const [stats, setStats] = useState({
         inventory: 0,
         orders: 0,
@@ -94,6 +95,8 @@ const Dashboard = () => {
 
             } catch (error) {
                 console.error("Failed to fetch dashboard data", error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -112,6 +115,17 @@ const Dashboard = () => {
         { name: 'Training', path: '/training', icon: BookOpen, color: 'bg-cyan-100 text-cyan-600' },
         { name: 'Performance', path: '/performance', icon: TrendingUp, color: 'bg-yellow-100 text-yellow-600' },
     ];
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[600px]">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="w-12 h-12 text-indigo-600 animate-spin" />
+                    <p className="text-gray-500 font-medium">Loading Dashboard...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-8">
