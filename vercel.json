@@ -23,10 +23,6 @@
             "destination": "/erp-frontend/assets/$1"
         },
         {
-            "source": "/favicon.png",
-            "destination": "/erp-frontend/favicon.png"
-        },
-        {
             "source": "/reset-password/(.*)",
             "destination": "/erp-frontend/index.html"
         },
