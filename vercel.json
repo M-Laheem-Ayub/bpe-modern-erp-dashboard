@@ -23,6 +23,10 @@
             "destination": "/erp-frontend/assets/$1"
         },
         {
+            "source": "/favicon.png",
+            "destination": "/erp-frontend/favicon.png"
+        },
+        {
             "source": "/((?!assets/|favicon.png|vite.svg|.*\\..*).*)",
             "destination": "/erp-frontend/index.html"
         }
