@@ -13,18 +13,14 @@
             }
         }
     ],
-    "routes": [
+    "rewrites": [
         {
-            "src": "/api/(.*)",
-            "dest": "server.js"
+            "source": "/api/(.*)",
+            "destination": "/server.js"
         },
         {
-            "src": "/(.*)\\.(.*)",
-            "dest": "/erp-frontend/$1.$2"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/erp-frontend/index.html"
+            "source": "/(.*)",
+            "destination": "/erp-frontend/index.html"
         }
     ]
 }
