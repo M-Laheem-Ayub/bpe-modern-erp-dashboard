@@ -27,7 +27,11 @@
             "destination": "/erp-frontend/favicon.png"
         },
         {
-            "source": "/((?!assets/|favicon.png|vite.svg|.*\\..*).*)",
+            "source": "/reset-password/(.*)",
+            "destination": "/erp-frontend/index.html"
+        },
+        {
+            "source": "/((?!assets/|favicon.png|vite.svg|api/).*)",
             "destination": "/erp-frontend/index.html"
         }
     ]
