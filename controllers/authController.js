@@ -176,7 +176,9 @@ exports.forgotPassword = async (req, res) => {
         });
 
         // The link points to our Frontend Reset Route
-        const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+        // Use origin from request header (deployed URL) or fallback to env var or localhost
+        const clientUrl = req.headers.origin || process.env.FRONTEND_URL || 'http://localhost:5173';
+        const resetLink = `${clientUrl}/reset-password/${resetToken}`;
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
