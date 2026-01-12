@@ -8,6 +8,10 @@ const Notification = require('../models/Notification');
 exports.register = async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
+        let user = await User.findOne({ email });
+        if (user) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
 
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         if (!passwordRegex.test(password)) {
@@ -57,10 +61,11 @@ exports.register = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
-
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        let user = await User.findOne({ email });
 
         if (!user) {
             return res.status(400).json({ message: 'Invalid Credentials' });
@@ -130,11 +135,6 @@ exports.forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
         const user = await User.findOne({ email });
-
-        if (!user) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return res.status(200).json({ message: 'If account exists, email sent.' });
-        }
 
         if (!user) {
             await new Promise(resolve => setTimeout(resolve, 1000));
