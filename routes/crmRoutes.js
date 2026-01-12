@@ -39,7 +39,6 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// Bulk Delete
 router.post('/bulk-delete', async (req, res) => {
     try {
         const { ids } = req.body;

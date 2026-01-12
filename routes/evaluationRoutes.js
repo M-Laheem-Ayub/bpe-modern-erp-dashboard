@@ -21,7 +21,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// PUT /:id - Update evaluation
 router.put('/:id', async (req, res) => {
     try {
         const item = await Evaluation.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -31,7 +30,6 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /:id - Delete evaluation
 router.delete('/:id', async (req, res) => {
     try {
         await Evaluation.findByIdAndDelete(req.params.id);
@@ -41,7 +39,6 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// POST /bulk-delete - Bulk delete evaluations
 router.post('/bulk-delete', async (req, res) => {
     try {
         const { ids } = req.body;

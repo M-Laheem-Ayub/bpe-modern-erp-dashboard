@@ -21,7 +21,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// PUT /:id - Update training session
 router.put('/:id', async (req, res) => {
     try {
         const item = await Training.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -31,7 +30,6 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /:id - Delete training session
 router.delete('/:id', async (req, res) => {
     try {
         await Training.findByIdAndDelete(req.params.id);
@@ -41,7 +39,6 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// POST /bulk-delete - Bulk delete trainings
 router.post('/bulk-delete', async (req, res) => {
     try {
         const { ids } = req.body;

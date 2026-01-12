@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Complaint = require('../models/Complaint');
 
-// POST / - File a complaint
 router.post('/', async (req, res) => {
     try {
         const newComplaint = new Complaint(req.body);
@@ -13,7 +12,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// GET / - View complaint tickets
 router.get('/', async (req, res) => {
     try {
         const complaints = await Complaint.find();
@@ -23,7 +21,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Update Complaint
 router.put('/:id', async (req, res) => {
     try {
         const updatedComplaint = await Complaint.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -33,7 +30,6 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// Delete Complaint
 router.delete('/:id', async (req, res) => {
     try {
         await Complaint.findByIdAndDelete(req.params.id);
@@ -43,7 +39,6 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// Bulk Delete
 router.post('/bulk-delete', async (req, res) => {
     try {
         const { ids } = req.body;

@@ -12,7 +12,6 @@ const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Password Validation State
     const [validations, setValidations] = useState({
         length: false,
         uppercase: false,
@@ -69,7 +68,6 @@ const Signup = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8 bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/50 relative overflow-hidden">
-                {/* Decorative background blobs */}
                 <div className="absolute top-0 right-0 -mr-20 -mt-20 w-40 h-40 rounded-full bg-indigo-100 opacity-50 blur-2xl"></div>
                 <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-40 h-40 rounded-full bg-purple-100 opacity-50 blur-2xl"></div>
 
@@ -161,7 +159,6 @@ const Signup = () => {
                             </div>
                         </div>
 
-                        {/* Password Requirements Checklist */}
                         <div className="bg-gray-50/80 backdrop-blur p-5 rounded-2xl border border-gray-100 space-y-3">
                             <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">Security Check</p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Procurement = require('../models/Procurement');
 
-// POST / - Request an item
 router.post('/', async (req, res) => {
     try {
         const newRequest = new Procurement(req.body);
@@ -13,7 +12,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// GET / - View procurement requests
 router.get('/', async (req, res) => {
     try {
         const requests = await Procurement.find();
@@ -23,7 +21,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// PUT /:id - Update procurement request
 router.put('/:id', async (req, res) => {
     try {
         const updatedRequest = await Procurement.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -33,7 +30,6 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /:id - Delete procurement request
 router.delete('/:id', async (req, res) => {
     try {
         await Procurement.findByIdAndDelete(req.params.id);
@@ -43,7 +39,6 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// POST /bulk-delete - Bulk delete requests
 router.post('/bulk-delete', async (req, res) => {
     try {
         const { ids } = req.body;

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const JobApplication = require('../models/JobApplication');
 
-// POST / - Apply for a job
 router.post('/', async (req, res) => {
     try {
         const newApplication = new JobApplication(req.body);
@@ -13,7 +12,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// GET / - View all applications
 router.get('/', async (req, res) => {
     try {
         const applications = await JobApplication.find();
@@ -23,7 +21,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// PUT /:id - Update application
 router.put('/:id', async (req, res) => {
     try {
         const updatedApp = await JobApplication.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -33,7 +30,6 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /:id - Delete application
 router.delete('/:id', async (req, res) => {
     try {
         await JobApplication.findByIdAndDelete(req.params.id);
@@ -43,7 +39,6 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// POST /bulk-delete - Delete multiple applications
 router.post('/bulk-delete', async (req, res) => {
     try {
         const { ids } = req.body;

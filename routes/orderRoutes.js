@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
 
-// POST /api/orders - Place a new order
 router.post('/', async (req, res) => {
     try {
         const newOrder = new Order(req.body);
@@ -13,7 +12,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// GET /api/orders - Fetch all orders
 router.get('/', async (req, res) => {
     try {
         const orders = await Order.find();
@@ -23,7 +21,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// PUT /api/orders/:id - Update an order
 router.put('/:id', async (req, res) => {
     try {
         const updatedOrder = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -33,7 +30,6 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /api/orders/:id - Delete an order
 router.delete('/:id', async (req, res) => {
     try {
         await Order.findByIdAndDelete(req.params.id);
@@ -43,7 +39,6 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// POST /api/orders/bulk-delete - Bulk delete orders
 router.post('/bulk-delete', async (req, res) => {
     try {
         const { ids } = req.body;
