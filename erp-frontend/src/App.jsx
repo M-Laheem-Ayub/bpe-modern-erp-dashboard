@@ -26,13 +26,11 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public Routes - accessible only if NOT logged in */}
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
           <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
           <Route path="/reset-password/:token" element={<PublicRoute><ResetPassword /></PublicRoute>} />
 
-          {/* Private Routes (Wrapped in Layout) */}
           <Route path="/" element={<PrivateRoute><Layout><Dashboard /></Layout></PrivateRoute>} />
           <Route path="/inventory" element={<PrivateRoute><Layout><Inventory /></Layout></PrivateRoute>} />
           <Route path="/orders" element={<PrivateRoute><Layout><Orders /></Layout></PrivateRoute>} />
@@ -46,7 +44,6 @@ function App() {
           <Route path="/crm" element={<PrivateRoute><Layout><CRM /></Layout></PrivateRoute>} />
           <Route path="/profile" element={<PrivateRoute><Layout><Profile /></Layout></PrivateRoute>} />
 
-          {/* Catch all - Redirect to Home */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

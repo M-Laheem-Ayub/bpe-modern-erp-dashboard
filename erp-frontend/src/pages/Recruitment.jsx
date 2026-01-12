@@ -17,20 +17,16 @@ const Recruitment = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
 
-    // Pagination State
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
 
-    // Edit State
     const [editingId, setEditingId] = useState(null);
 
-    // Bulk Delete State
     const [selectedIds, setSelectedIds] = useState([]);
 
-    // Delete Modal State
     const [deleteModal, setDeleteModal] = useState({
         isOpen: false,
-        type: null, // 'single' or 'bulk'
+        type: null,
         id: null,
         count: 0
     });
@@ -53,7 +49,6 @@ const Recruitment = () => {
             app.position.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
-    // Pagination Logic
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredApplications.slice(indexOfFirstItem, indexOfLastItem);
@@ -71,11 +66,9 @@ const Recruitment = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                // Update existing application
                 await api.put(`/jobs/${editingId}`, formData);
                 setEditingId(null);
             } else {
-                // Create new application
                 await api.post('/jobs', { ...formData, status: 'Applied' });
             }
             setFormData({ candidateName: '', position: '', email: '', resumeLink: '' });
@@ -187,7 +180,6 @@ const Recruitment = () => {
                     <h2 className="text-2xl font-bold text-gray-800">Recruitment</h2>
                     <p className="text-gray-500 text-sm">Manage job applications and candidates.</p>
                 </div>
-                {/* Removed Add Candidate button from here as it is handled by the form */}
             </div>
 
             <div className={`bg-white p-6 rounded-2xl shadow-sm border ${editingId ? 'border-purple-400 ring-1 ring-purple-400' : 'border-gray-100'}`}>
@@ -255,7 +247,6 @@ const Recruitment = () => {
                     </div>
                 </div>
 
-                {/* Desktop Table */}
                 <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-gray-50 text-gray-500">
@@ -320,7 +311,6 @@ const Recruitment = () => {
                     </table>
                 </div>
 
-                {/* Mobile Cards */}
                 <div className="md:hidden p-4 space-y-4">
                     {loading ? (
                         <p className="text-center text-gray-500">Loading...</p>

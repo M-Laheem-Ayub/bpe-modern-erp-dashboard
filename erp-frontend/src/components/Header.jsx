@@ -9,21 +9,17 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
 
-    // Dropdown States
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
-    // Logout Modal State
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-    // Real Notifications State
     const [notifications, setNotifications] = useState([]);
 
     const navigate = useNavigate();
     const dropdownRef = useRef(null);
     const notifRef = useRef(null);
 
-    // Fetch Notifications on Mount (or when opening dropdown)
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
@@ -36,7 +32,6 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
 
         if (user) {
             fetchNotifications();
-            // Poll for new notifications every 3 seconds
             const interval = setInterval(fetchNotifications, 3000);
             return () => clearInterval(interval);
         }
@@ -58,7 +53,6 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
         { name: 'Performance Reviews', path: '/performance' },
     ];
 
-    // Close dropdowns when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -129,7 +123,6 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
         }
     };
 
-    // Helper to format time (e.g., "5 mins ago")
     const timeAgo = (date) => {
         const seconds = Math.floor((new Date() - new Date(date)) / 1000);
         let interval = seconds / 31536000;
@@ -152,7 +145,6 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
                     {isSidebarOpen ? <ChevronLeft size={22} /> : <Menu size={22} />}
                 </button>
 
-                {/* Dashboard Home Icon */}
                 <button
                     onClick={() => navigate('/')}
                     className="text-gray-500 hover:text-indigo-600 p-1.5 rounded-lg hover:bg-indigo-50 transition-all group"
@@ -161,7 +153,6 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
                     <LayoutDashboard size={22} className="group-hover:scale-110 transition-transform" />
                 </button>
 
-                {/* Search Bar */}
                 <div className="hidden md:flex flex-col relative ml-2">
                     <div className="flex items-center bg-gray-100 rounded-xl px-4 py-2 w-64 lg:w-96 border border-transparent focus-within:border-indigo-300 focus-within:bg-white transition-all">
                         <Search size={18} className="text-gray-400 mr-2" />
@@ -174,7 +165,6 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
                         />
                     </div>
 
-                    {/* Search Results Dropdown */}
                     {results.length > 0 && (
                         <div className="absolute top-full left-0 w-full mt-2 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 overflow-hidden">
                             {results.map((result) => (
@@ -196,7 +186,6 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
 
             <div className="flex items-center gap-4 md:gap-6">
 
-                {/* Notifications Dropdown */}
                 <div className="relative" ref={notifRef}>
                     <button
                         onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
@@ -253,7 +242,6 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
                     )}
                 </div>
 
-                {/* User Dropdown */}
                 <div className="relative" ref={dropdownRef}>
                     <button
                         onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -269,7 +257,6 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
                         <ChevronDown size={16} className={`text-gray-400 transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
                     </button>
 
-                    {/* Dropdown Menu */}
                     {isProfileOpen && (
                         <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50 animation-fade-in-down">
                             <div className="px-4 py-3 border-b border-gray-50">
@@ -307,7 +294,6 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
                 </div>
             </div>
 
-            {/* Logout Confirmation Modal */}
             {showLogoutModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in">
                     <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 relative animate-in zoom-in-95 duration-200">

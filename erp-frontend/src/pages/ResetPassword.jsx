@@ -14,7 +14,6 @@ const ResetPassword = () => {
     const [success, setSuccess] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    // Password Validation State
     const [validations, setValidations] = useState({
         length: false,
         uppercase: false,
@@ -142,7 +141,6 @@ const ResetPassword = () => {
                             </div>
                         </div>
 
-                        {/* Password Requirements Checklist */}
                         <div className="bg-gray-50/80 backdrop-blur p-4 rounded-xl border border-gray-100 space-y-2">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                 <ValidationItem fulfilled={validations.length} text="8+ characters" />

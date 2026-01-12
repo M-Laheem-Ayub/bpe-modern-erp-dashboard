@@ -17,20 +17,16 @@ const Performance = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [scoreFilter, setScoreFilter] = useState('All');
 
-    // Pagination State
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
 
-    // Edit State
     const [editingId, setEditingId] = useState(null);
 
-    // Bulk Delete State
     const [selectedIds, setSelectedIds] = useState([]);
 
-    // Delete Modal State
     const [deleteModal, setDeleteModal] = useState({
         isOpen: false,
-        type: null, // 'single' or 'bulk'
+        type: null,
         id: null,
         count: 0
     });
@@ -59,7 +55,6 @@ const Performance = () => {
         return matchesSearch && matchesScore;
     });
 
-    // Pagination Logic
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredEvaluations.slice(indexOfFirstItem, indexOfLastItem);
@@ -77,11 +72,9 @@ const Performance = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                // Update existing evaluation
                 await api.put(`/evaluations/${editingId}`, { ...formData, score: Number(formData.score) });
                 setEditingId(null);
             } else {
-                // Create new evaluation
                 await api.post('/evaluations', { ...formData, score: Number(formData.score) });
             }
             setFormData({ employeeName: '', reviewPeriod: '', score: '', comments: '' });
@@ -192,7 +185,6 @@ const Performance = () => {
                     <h2 className="text-2xl font-bold text-gray-800">Performance Evaluation</h2>
                     <p className="text-gray-500 text-sm">Review employee performance and goals.</p>
                 </div>
-                {/* Removed Add Review button from here as it is handled by the form */}
             </div>
 
             <div className={`bg-white p-6 rounded-2xl shadow-sm border ${editingId ? 'border-yellow-400 ring-1 ring-yellow-400' : 'border-gray-100'}`}>
@@ -259,7 +251,6 @@ const Performance = () => {
                     </div>
                 </div>
 
-                {/* Desktop Table */}
                 <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-gray-50 text-gray-500">
@@ -314,7 +305,6 @@ const Performance = () => {
                     </table>
                 </div>
 
-                {/* Mobile Cards */}
                 <div className="md:hidden p-4 space-y-4">
                     {loading ? (
                         <p className="text-center text-gray-500">Loading...</p>

@@ -32,23 +32,16 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
     return (
         <>
-            {/* Mobile Overlay */}
             <div
                 className={`fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
                     }`}
                 onClick={toggleSidebar}
             />
 
-            {/* Sidebar 
-          - Always overflow-hidden to prevent text spilling during transition
-          - Mobile: Fixed, slide in/out using translate
-          - Desktop: Static, width transition from 0 to 64
-      */}
             <div className={`fixed inset-y-0 left-0 z-50 bg-[#0f172a] text-white transition-all duration-300 ease-in-out overflow-hidden
         ${isOpen ? 'translate-x-0 w-64' : '-translate-x-full md:translate-x-0 md:w-0'}
         md:static
       `}>
-                {/* Inner Container with min-width to ensure content doesn't wrap while parent shrinks */}
                 <div className="flex items-center justify-between h-16 px-6 border-b border-gray-700 min-w-[256px]">
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">

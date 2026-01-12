@@ -18,20 +18,16 @@ const Complaints = () => {
     const [priorityFilter, setPriorityFilter] = useState('All');
     const [statusFilter, setStatusFilter] = useState('All');
 
-    // Pagination State
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
 
-    // Edit State
     const [editingId, setEditingId] = useState(null);
 
-    // Bulk Delete State
     const [selectedIds, setSelectedIds] = useState([]);
 
-    // Delete Modal State
     const [deleteModal, setDeleteModal] = useState({
         isOpen: false,
-        type: null, // 'single' or 'bulk'
+        type: null,
         id: null,
         count: 0
     });
@@ -55,7 +51,6 @@ const Complaints = () => {
             c.issueType.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
-    // Pagination Logic
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredComplaints.slice(indexOfFirstItem, indexOfLastItem);
@@ -73,11 +68,9 @@ const Complaints = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                // Update existing complaint
                 await api.put(`/complaints/${editingId}`, formData);
                 setEditingId(null);
             } else {
-                // Create new complaint
                 await api.post('/complaints', { ...formData, status: 'Open' });
             }
             setFormData({ customerName: '', issueType: '', description: '', priority: 'Medium' });
@@ -189,7 +182,6 @@ const Complaints = () => {
                     <h2 className="text-2xl font-bold text-gray-800">Customer Support</h2>
                     <p className="text-gray-500 text-sm">Manage customer tickets and complaints.</p>
                 </div>
-                {/* Removed Add Ticket button from here as it is handled by the form */}
             </div>
 
             <div className={`bg-white p-6 rounded-2xl shadow-sm border ${editingId ? 'border-red-400 ring-1 ring-red-400' : 'border-gray-100'}`}>
@@ -273,7 +265,6 @@ const Complaints = () => {
                     </div>
                 </div>
 
-                {/* Desktop Table */}
                 <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-gray-50 text-gray-500">
@@ -333,7 +324,6 @@ const Complaints = () => {
                     </table>
                 </div>
 
-                {/* Mobile Cards */}
                 <div className="md:hidden p-4 space-y-4">
                     {loading ? (
                         <p className="text-center text-gray-500">Loading...</p>

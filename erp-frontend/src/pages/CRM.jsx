@@ -17,20 +17,16 @@ const CRM = () => {
     const [interestFilter, setInterestFilter] = useState('All');
     const [statusFilter, setStatusFilter] = useState('All');
 
-    // Pagination State
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
 
-    // Edit State
     const [editingId, setEditingId] = useState(null);
 
-    // Bulk Delete State
     const [selectedIds, setSelectedIds] = useState([]);
 
-    // Delete Modal State
     const [deleteModal, setDeleteModal] = useState({
         isOpen: false,
-        type: null, // 'single' or 'bulk'
+        type: null,
         id: null,
         count: 0
     });
@@ -54,7 +50,6 @@ const CRM = () => {
             l.phone.includes(searchTerm))
     );
 
-    // Pagination Logic
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredLeads.slice(indexOfFirstItem, indexOfLastItem);
@@ -72,11 +67,9 @@ const CRM = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                // Update existing lead
                 await api.put(`/crm/${editingId}`, formData);
                 setEditingId(null);
             } else {
-                // Create new lead
                 await api.post('/crm', { ...formData, status: 'New' });
             }
             setFormData({ customerName: '', phone: '', interestLevel: 'Warm' });
@@ -269,7 +262,6 @@ const CRM = () => {
                     </div>
                 </div>
 
-                {/* Desktop Table */}
                 <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-gray-50 text-gray-500">
@@ -326,7 +318,6 @@ const CRM = () => {
                     </table>
                 </div>
 
-                {/* Mobile Cards */}
                 <div className="md:hidden p-4 space-y-4">
                     {loading ? (
                         <p className="text-center text-gray-500">Loading...</p>

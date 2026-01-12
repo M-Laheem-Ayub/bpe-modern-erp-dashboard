@@ -15,20 +15,13 @@ const ForgotPassword = () => {
         setError('');
 
         try {
-            // Call the real backend API
             await api.post('/auth/forgot-password', { email });
             setSubmitted(true);
         } catch (err) {
             console.error('Error sending reset email', err);
-            // We usually don't want to reveal if an email exists or not for security, 
-            // but for this ERP UX we might want to show errors if it's a network issue.
-            // For now, let's just proceed to submitted state or show generic error if 500
             if (err.response && err.response.status === 500) {
                 setError('Server error. Please try again later.');
             } else {
-                // Even if user not found, we often fake success to prevent email enumeration.
-                // But typically in ERPs we might want to be helpful. 
-                // Let's assume we proceed to success screen to be secure by default.
                 setSubmitted(true);
             }
         } finally {

@@ -17,20 +17,16 @@ const Training = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
 
-    // Pagination State
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
 
-    // Edit State
     const [editingId, setEditingId] = useState(null);
 
-    // Bulk Delete State
     const [selectedIds, setSelectedIds] = useState([]);
 
-    // Delete Modal State
     const [deleteModal, setDeleteModal] = useState({
         isOpen: false,
-        type: null, // 'single' or 'bulk'
+        type: null,
         id: null,
         count: 0
     });
@@ -53,7 +49,6 @@ const Training = () => {
             t.trainingTopic.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
-    // Pagination Logic
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredTrainings.slice(indexOfFirstItem, indexOfLastItem);
@@ -71,11 +66,9 @@ const Training = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                // Update existing training
                 await api.put(`/training/${editingId}`, formData);
                 setEditingId(null);
             } else {
-                // Create new training
                 await api.post('/training', formData);
             }
             setFormData({ employeeName: '', trainingTopic: '', completionDate: '', status: 'Scheduled' });
@@ -186,7 +179,6 @@ const Training = () => {
                     <h2 className="text-2xl font-bold text-gray-800">Employee Training</h2>
                     <p className="text-gray-500 text-sm">Schedule and track skill development.</p>
                 </div>
-                {/* Removed Add Session button from here as it is handled by the form */}
             </div>
 
             <div className={`bg-white p-6 rounded-2xl shadow-sm border ${editingId ? 'border-cyan-400 ring-1 ring-cyan-400' : 'border-gray-100'}`}>
@@ -258,7 +250,6 @@ const Training = () => {
                     </div>
                 </div>
 
-                {/* Desktop Table */}
                 <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-gray-50 text-gray-500">
@@ -315,7 +306,6 @@ const Training = () => {
                     </table>
                 </div>
 
-                {/* Mobile Cards */}
                 <div className="md:hidden p-4 space-y-4">
                     {loading ? (
                         <p className="text-center text-gray-500">Loading...</p>

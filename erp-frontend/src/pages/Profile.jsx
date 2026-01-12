@@ -15,7 +15,7 @@ const Profile = () => {
         setIsDeleting(true);
         try {
             await api.delete('/auth/delete');
-            logout(); // Effectively clears state and redirects to login
+            logout();
         } catch (err) {
             console.error("Error deleting account", err);
             alert("Failed to delete account. Please try again.");
@@ -29,7 +29,6 @@ const Profile = () => {
             <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                {/* Cover Photo / Header */}
                 <div className="h-32 bg-gradient-to-r from-indigo-500 to-purple-600 relative">
                 </div>
 
@@ -49,7 +48,6 @@ const Profile = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* Personal Information */}
                         <div className="space-y-6">
                             <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-2">Personal Information</h3>
 
@@ -76,7 +74,6 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        {/* Account Information */}
                         <div className="space-y-6">
                             <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-2">Account Details</h3>
 
@@ -105,7 +102,6 @@ const Profile = () => {
                                     <div>
                                         <p className="text-sm font-medium text-gray-500">Member Since</p>
                                         <p className="text-gray-900 font-medium">
-                                            {/* Fallback date if current implementation lacks createdAt */}
                                             {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}
                                         </p>
                                     </div>
@@ -114,7 +110,6 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    {/* Danger Zone */}
                     <div className="mt-12 pt-8 border-t border-gray-100">
                         <h3 className="text-lg font-semibold text-red-600 mb-4">Danger Zone</h3>
                         <div className="bg-red-50 border border-red-100 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -135,7 +130,6 @@ const Profile = () => {
                 </div>
             </div>
 
-            {/* Delete Confirmation Modal */}
             <DeleteConfirmationModal
                 isOpen={showDeleteModal}
                 onClose={() => setShowDeleteModal(false)}
