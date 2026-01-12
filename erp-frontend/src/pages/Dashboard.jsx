@@ -63,15 +63,12 @@ const Dashboard = () => {
                     vendors: vendorsRes.data.length
                 });
 
-                // 1. Logic for Low Stock Alerts (Stock < 20)
                 const lowStock = inventory.filter(item => item.currentStock < 20);
                 setStockAlerts(lowStock.slice(0, 3));
 
-                // 2. Logic for Recent Orders (Last 5)
                 const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setRecentOrders(sortedOrders.slice(0, 5));
 
-                // 3. Logic for Weekly Activity Chart (Last 7 Days Orders)
                 const last7Days = [...Array(7)].map((_, i) => {
                     const d = new Date();
                     d.setDate(d.getDate() - i);
@@ -82,7 +79,6 @@ const Dashboard = () => {
                     const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
                     const dateStr = date.toISOString().split('T')[0];
 
-                    // Count orders that match this date (ignoring time)
                     const count = orders.filter(order => {
                         if (!order.createdAt) return false;
                         const orderDate = new Date(order.createdAt).toISOString().split('T')[0];
@@ -129,13 +125,11 @@ const Dashboard = () => {
 
     return (
         <div className="space-y-8">
-            {/* Page Title */}
             <div>
                 <h1 className="text-2xl font-bold text-gray-800">Overview</h1>
                 <p className="text-gray-500 text-sm">Real-time metrics from your Smart ERP.</p>
             </div>
 
-            {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard
                     title="Total Inventory"
@@ -169,10 +163,8 @@ const Dashboard = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                {/* Left Column: Chart & Quick Access */}
                 <div className="lg:col-span-2 space-y-8">
 
-                    {/* Chart */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-lg font-bold text-gray-800">Weekly Activity</h3>
@@ -196,7 +188,6 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    {/* Quick Links Grid */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 className="text-lg font-bold text-gray-800 mb-6">Quick Access</h3>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -215,10 +206,8 @@ const Dashboard = () => {
 
                 </div>
 
-                {/* Right Column: Alerts & Recent Orders */}
                 <div className="space-y-6">
 
-                    {/* Stock Alerts Widget */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <div className="flex items-center gap-2 mb-4">
                             <AlertTriangle className="text-orange-500" size={20} />
@@ -243,7 +232,6 @@ const Dashboard = () => {
                         )}
                     </div>
 
-                    {/* Recent Orders Widget */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-lg font-bold text-gray-800">Recent Orders</h3>

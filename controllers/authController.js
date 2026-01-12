@@ -5,18 +5,10 @@ const nodemailer = require('nodemailer');
 
 const Notification = require('../models/Notification');
 
-// Register a new user
 exports.register = async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
 
-        // Check if user already exists
-        let user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
-
-        // Validate Password Strength
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         if (!passwordRegex.test(password)) {
             return res.status(400).json({
@@ -24,11 +16,9 @@ exports.register = async (req, res) => {
             });
         }
 
-        // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Create user
         user = new User({
             name,
             email,
@@ -38,7 +28,6 @@ exports.register = async (req, res) => {
 
         await user.save();
 
-        // Welcome Notification for New Account
         await Notification.create({
             user: user._id,
             type: 'info',
@@ -46,7 +35,6 @@ exports.register = async (req, res) => {
             message: `Hello ${user.name}, we are excited to have you on board.`
         });
 
-        // Create Token
         const payload = {
             user: {
                 id: user.id,
@@ -70,24 +58,19 @@ exports.register = async (req, res) => {
     }
 };
 
-// Login User
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Check if user exists
-        let user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: 'Invalid Credentials' });
         }
 
-        // Validate Password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid Credentials' });
         }
 
-        // Create Token
         const payload = {
             user: {
                 id: user.id,
@@ -95,7 +78,6 @@ exports.login = async (req, res) => {
             }
         };
 
-        // Welcome Back Notification (if last login was > 3 days ago or never)
         if (user.lastLogin) {
             const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
             if (user.lastLogin < threeDaysAgo) {
@@ -115,7 +97,6 @@ exports.login = async (req, res) => {
             });
         }
 
-        // Update Last Login
         user.lastLogin = Date.now();
         await user.save();
 
@@ -135,7 +116,6 @@ exports.login = async (req, res) => {
     }
 };
 
-// Get Logged In User
 exports.getUser = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
@@ -146,7 +126,6 @@ exports.getUser = async (req, res) => {
     }
 };
 
-// Forgot Password
 exports.forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
@@ -157,10 +136,11 @@ exports.forgotPassword = async (req, res) => {
             return res.status(200).json({ message: 'If account exists, email sent.' });
         }
 
-        // Create a temporary reset token (expires in 15 mins)
-        // We use the user's current password hash + secret as the secret key.
-        // This ensures that if the password is changed, the token invalidates immediately.
-        // Or simpler: just standard JWT with secret.
+        if (!user) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            return res.status(200).json({ message: 'If account exists, email sent.' });
+        }
+
         const resetToken = jwt.sign(
             { id: user.id },
             process.env.JWT_SECRET || 'secret123',
@@ -175,8 +155,6 @@ exports.forgotPassword = async (req, res) => {
             }
         });
 
-        // The link points to our Frontend Reset Route
-        // Use origin from request header (deployed URL) or fallback to env var or localhost
         const clientUrl = req.headers.origin || process.env.FRONTEND_URL || 'http://localhost:5173';
         const resetLink = `${clientUrl}/reset-password/${resetToken}`;
 
@@ -206,16 +184,13 @@ exports.forgotPassword = async (req, res) => {
     }
 };
 
-// Handle Reset Password (Actual Update)
 exports.resetPassword = async (req, res) => {
     try {
         const { token } = req.params;
         const { password } = req.body;
 
-        // Verify Token
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret123');
 
-        // Validate New Password Strength
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         if (!passwordRegex.test(password)) {
             return res.status(400).json({
@@ -223,11 +198,9 @@ exports.resetPassword = async (req, res) => {
             });
         }
 
-        // Find user
         const user = await User.findById(decoded.id);
         if (!user) return res.status(400).json({ message: 'Invalid token' });
 
-        // Hash new password
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
 
@@ -244,13 +217,10 @@ exports.resetPassword = async (req, res) => {
     }
 };
 
-// Delete Account
 exports.deleteAccount = async (req, res) => {
     try {
-        // Find and delete the user using the ID from the verified token (req.user.id)
         await User.findByIdAndDelete(req.user.id);
 
-        // Also delete user's notifications
         await Notification.deleteMany({ user: req.user.id });
 
         res.json({ message: 'User deleted' });
